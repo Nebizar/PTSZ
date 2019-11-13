@@ -12,4 +12,4 @@ Algorithms directories:
 * Algorithms
     * index_no
         * Algorithm1 (name TODO)
-	* Algorithm2 (name TODO)
+	    * Algorithm2 (name TODO)
