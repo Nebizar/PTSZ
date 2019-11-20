@@ -5,7 +5,7 @@ numbers = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 machineNumbers = 4
 
 class Task(object):
-    def __init__(self, r, p, d, id):
+    def __init__(self, p, r, d, id):
         self.r = r
         self.p = p
         self.d = d
@@ -42,7 +42,7 @@ def sortFile(tasksNumbers):
 
     # Sort tasks based on R
     tasksList = sorted(tasksList, key=lambda x: x.r)
-    # print(list(map(lambda x: x.r, tasksList)))
+    # print(list(map(lambda x: x.r, tasksList)))z
 
     # Continue if there is any task to put on machine
     while len(tasksList) != 0:
