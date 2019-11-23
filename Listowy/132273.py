@@ -51,9 +51,9 @@ def algorithm(tasksNumbers):
     for i in range(0, 4):
         for j in range(0, len(M[i])):
             if j == 0:
-                result.write(str(M[i][j])) 
+                result.write(str(M[i][j]+1)) 
             else:
-                result.write(' ' + str(M[i][j]))
+                result.write(' ' + str(M[i][j]+1))
         result.write('\n')
     return (sum(D))
 
