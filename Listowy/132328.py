@@ -19,22 +19,17 @@ def find_ready_task(task,l,machine_time):
     return j
 
 def two_phase_scheduling(n, param):
-    sumP=[0,0,0,0]
+    sumP=[[0,0],[0,1],[0,2],[0,3]]
     tasks=[[],[],[],[]]
     task_list=[[],[],[],[]]
     machine_time=[[0,0],[0,1],[0,2],[0,3]]
     param.sort(key=itemgetter(3))
     sumD=0
         
-    i=0
-    while i<n:
-        for j in range(4):
-            if j==0: k=3
-            else: k=j-1
-            while i<n and sumP[j]<=sumP[k]:
-                task_list[j].append(param[i])
-                sumP[j]+=param[i][0]
-                i+=1
+    for i in range(n):
+        j=min(sumP)[1]
+        task_list[j].append(param[i])
+        sumP[j][0]+=param[i][0]               
                     
     for j in range(4):
         task_list[j].sort(key=itemgetter(0))
