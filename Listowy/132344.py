@@ -38,8 +38,8 @@ def main():
     for id in range(0, machineNumbers):
         machinesList.append(Machine(id, False, 0))
 
-    # Sort tasks based on R
-    tasksList = sorted(tasksList, key=lambda x: x.r)
+    # Sort tasks based on d
+    tasksList = sorted(tasksList, key=lambda x: int(x.d))
 
     # Continue if there is any task to put on machine
     while len(tasksList) != 0:
@@ -50,7 +50,7 @@ def main():
                     machine.isOcuppied = False
 
             if(not(machine.isOcuppied)):
-                # Get task with lowest 'r' value
+                # Get task with lowest 'd' value
                 testedTask = tasksList[0]
                 if(timeLine >= int(testedTask.r)):
                     # Start task on machine
