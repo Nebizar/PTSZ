@@ -1,7 +1,8 @@
-
+import sys
+import math
+import os
 import time
 
-numbers = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 machineNumbers = 4
 
 class Task(object):
@@ -19,19 +20,16 @@ class Machine(object):
         self.tasks = []
         self.shouldEnd = shouldEnd
 
-
-def sortFile(tasksNumbers):
-    tasksFile = open("in/" + str(tasksNumbers) + ".txt", "r")
-    outFile = open("out/" + str(tasksNumbers) + ".txt", "w+")
-    # Skipping Line
-    query = tasksFile.readline()
+def main():
+    file = open("instances/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "r")
+    number_of_rows = int(file.readline())
     tasksList = []
     # Getting task list to array (r,p,d) as object
-    for number in range(0, tasksNumbers):
-        line = tasksFile.readline()
+    for number in range(0, int(number_of_rows)):
+        line = file.readline()
         line = line.strip().split(' ')
         tasksList.append(Task(int(line[0]), line[1], line[2], number))
-
+    file.close()
     # Calculated Value from file
     calculatedE = 0
     timeLine = 0
@@ -42,7 +40,6 @@ def sortFile(tasksNumbers):
 
     # Sort tasks based on R
     tasksList = sorted(tasksList, key=lambda x: x.r)
-    # print(list(map(lambda x: x.r, tasksList)))z
 
     # Continue if there is any task to put on machine
     while len(tasksList) != 0:
@@ -66,25 +63,18 @@ def sortFile(tasksNumbers):
                         break
         timeLine = timeLine + 1
     
-
-    outFile.write(str(calculatedE) + '\n')
+    if not os.path.exists("results/" + "/132344/a1/" + sys.argv[1] + "/"):
+        os.makedirs("results/" + "/132344/a1/" + sys.argv[1] + "/")
+    file = open("results/" + "/132344/a1/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "w+")
+    file.write(str(calculatedE) + "\n")
     for machine in machinesList:
         for task in machine.tasks:
-            outFile.write(str(task.id + 1) + ' ')
+            file.write(str(task.id + 1) + ' ')
         if(machine.id != 3):
-            outFile.write('\n')
-    return calculatedE
-    
+            file.write('\n')
+    file.close()
 
-print("Czas trwania algorytmu dla poszczegolnych instancji:")
-results = []
-for number in numbers:
-    start = time.time()
-    calc = sortFile(number)
-    end = time.time()
-    results.append(calc)
-    print("%.5f" % (end - start))
-print("\n")
-print("Wynik E:")
-for i in results:
-    print(i)
+
+
+if __name__ == '__main__':
+    main()
