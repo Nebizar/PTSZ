@@ -36,13 +36,13 @@ class Machine:
             return
 
         j = self.jobs[0]
-
-        if j.ready_time <= self.time:
-            self.time += j.proc_time
-            self.tardiness += max(0, self.time - j.due_time)
-            self.jobs.pop(0)
-        else:
+        
+        if j.ready_time > self.time:
             self.time = j.ready_time
+        
+        self.time += j.proc_time
+        self.tardiness += max(0, self.time - j.due_time)
+        self.jobs.pop(0)
 
 
 def key_function(job, time):
