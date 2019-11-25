@@ -18,13 +18,14 @@ class Machine:
     def is_busy(self):
         return False if self.current_job is None else True
 
-    def finish_job(self, last_job=False):
-        self.tardiness += 0 \
-            if self.current_job_end_time <= self.current_job[3] \
-            else self.current_job_end_time - self.current_job[3]
+    def finish_job(self):
+        if self.current_job is not None:
+            self.tardiness += 0 \
+                if self.current_job_end_time <= self.current_job[3] \
+                else self.current_job_end_time - self.current_job[3]
 
-        self.past_jobs.append(self.current_job)
-        self.current_job = None
+            self.past_jobs.append(self.current_job)
+            self.current_job = None
 
     def start_job(self, job):
         self.current_job = job
@@ -67,7 +68,7 @@ def update_machines(machines, time):
 
 def finish_last_jobs(machines):
     for m in machines:
-        m.finish_job(last_job=True)
+        m.finish_job()
 
 
 def sum_tardiness(machines):
