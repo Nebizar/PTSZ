@@ -35,7 +35,7 @@ def count_due_on_machines(number_of_rows, task_list, machine_list):
 
 
 def main():
-    file = open("instances/" + sys.argv[1] + "/" + sys.argv[2] + ".txt")
+    file = open("instances/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "rU")
     number_of_rows = int(file.readline())
     machine_list = [Machine(), Machine(), Machine(), Machine()]
     task_list = []
