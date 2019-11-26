@@ -37,7 +37,7 @@ def main():
         proc[mini].D = max(zad[i].r, proc[mini].D) + zad[i].p
         D += max(0, proc[mini].D - zad[i].d)
     
-    output_path = "results/132259/a1" + str(sys.argv[1])
+    output_path = "results/132259/a1/" + str(sys.argv[1])
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     file = open(output_path + "/" + str(sys.argv[2]) + ".txt", "w+")
