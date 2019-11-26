@@ -1,4 +1,6 @@
 import time
+import os
+import sys
 
 class Task(object):
     def __init__(self, id, p, r, d):
