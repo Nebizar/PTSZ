@@ -36,9 +36,11 @@ def main():
         proc[mini].zad.append(zad[i].id)
         proc[mini].D = max(zad[i].r, proc[mini].D) + zad[i].p
         D += max(0, proc[mini].D - zad[i].d)
-    if not os.path.exists("results/" + str(sys.argv[1]) + "/a1/132259/"):
-        os.makedirs("results/" + str(sys.argv[1]) + "/a1/132259/")
-    file = open("results/" + str(sys.argv[1]) + "/a1/132259/" + str(sys.argv[2]) + ".txt", "w+")
+    
+    output_path = "results/132259/a1" + str(sys.argv[1])
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    file = open(output_path + "/" + str(sys.argv[2]) + ".txt", "w+")
     file.write(str(D) + "\n")
 
     for i in range(4):
