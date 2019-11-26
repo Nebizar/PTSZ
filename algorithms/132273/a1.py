@@ -13,7 +13,7 @@ class Task(object):
 
 def algorithm(tasksNumbers):
 	tasksFile = open("instances/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "rU")
-	 if not os.path.exists("results/" + "/132273/a1/" + sys.argv[1] + "/"):
+	if not os.path.exists("results/" + "/132273/a1/" + sys.argv[1] + "/"):
         os.makedirs("results/" + "/132273/a1/" + sys.argv[1] + "/")
     result = open("results/" + "/132273/a1/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "w+")							  
     # Skipping Line
