@@ -41,8 +41,8 @@ def find_first_available(machines, task):
 
 
 def assign(machines, tasks):
-	tasks.sort(key=attrgetter('r', 'p'))
-	tasks.sort(key=lambda task: task.d - task.r + task.p)
+	tasks.sort(key=lambda task: task.d - (task.r + task.p))
+	tasks.sort(key=attrgetter('p', 'r'))
 	while tasks:
 		find_first_available(machines, tasks[0])
 		tasks.pop(0)
