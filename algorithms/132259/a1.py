@@ -17,7 +17,7 @@ def suma(e):
     return e.r + e.d
 
 def main():
-    file = open("instances/132259/" + str(sys.argv[2]) + ".txt", "r")
+    file = open("instances/" + str(sys.argv[1]) + "/" + str(sys.argv[2]) + ".txt", "r")
     n = int(file.readline())
     zad = []
     proc = [Processor(), Processor(), Processor(), Processor()]
