@@ -15,7 +15,7 @@ def main():
 
     for algorithm_author in directory_list:
         for n in range(50, 501, 50):
-            cmd = "python algorithms/{}/{}.py {} {}" \
+            cmd = "python3 algorithms/{}/{}.py {} {}" \
                 .format(algorithm_author,
                         algorithm,
                         instance_author,

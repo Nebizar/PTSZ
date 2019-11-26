@@ -1,26 +1,24 @@
-from dataclasses import dataclass, field
 from sys import argv
-from typing import List, Tuple, Dict
 from copy import copy 
 from operator import attrgetter
 import os
 
-@dataclass
 class Task:
-	id: int
-	p: int
-	r: int
-	d: int
+	def __init__(self, id, p, r, d):
+		self.id = id
+		self.p = p
+		self.r = r
+		self.d = d
 
 
-@dataclass
 class Machine: 
-	id: int
-	current_time: int = 0
-	tasks_submited: List[Task] = field(default_factory=list)
+	def __init__(self, id, current_time=0, tasks_submited=None):
+		self.id = id
+		self.current_time = current_time
+		self.tasks_submited = tasks_submited or []
 
 
-def calculate_error(tasks: List[Task]) -> int:
+def calculate_error(tasks):
 	error = 0
 	time = 0
 	for task in tasks:
@@ -33,7 +31,7 @@ def calculate_error(tasks: List[Task]) -> int:
 	return error
 
 
-def find_first_available(machines: Dict[int, Machine], task: Task):
+def find_first_available(machines, task):
 	least_occupied = sorted(machines.values(), key=attrgetter('current_time'))[0]
 	least_occupied.tasks_submited.append(copy(task))
 	if task.r < least_occupied.current_time:
@@ -42,7 +40,7 @@ def find_first_available(machines: Dict[int, Machine], task: Task):
 		least_occupied.current_time = task.r + task.p
 
 
-def assign(machines: Dict[int, Machine], tasks: List[Task]) -> int:
+def assign(machines, tasks):
 	tasks.sort(key=attrgetter('r', 'p'))
 	tasks.sort(key=lambda task: task.d - task.r + task.p)
 	while tasks:
@@ -50,12 +48,12 @@ def assign(machines: Dict[int, Machine], tasks: List[Task]) -> int:
 		tasks.pop(0)
 
 def run():
-	machines: Dict[int, Machine] = {i: Machine(id=i) for i in range(1, 5)}
-	tasks: List[Task] = []
+	machines = {i: Machine(id=i) for i in range(1, 5)}
+	tasks = []
 
 	_, index, n = argv
 
-	input_file = open(f'instances/{index}/{n}.txt')
+	input_file = open('instances/{index}/{n}.txt'.format(index=index, n=n))
 	for idx, line in enumerate(input_file.readlines()[1:]):
 		p, r ,d = map(int, line.split())
 		tasks.append(Task(idx + 1, p, r, d))
@@ -64,10 +62,10 @@ def run():
 
 	error = sum((calculate_error(m.tasks_submited) for m in machines.values()))
 
-	output_dir = f'results/132287/a1/{index}'
+	output_dir = 'results/132287/a1/{index}'.format(index=index)
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
-	output = open(f'{output_dir}/{n}.txt', 'w')
+	output = open('{output_dir}/{n}.txt'.format(output_dir=output_dir, n=n), 'w')
 	output.write(str(error))
 	output.write('\n')
 	for machine in machines.values():
