@@ -14,7 +14,7 @@ def get_data(input_file):
     return tasks, n
 
 def sort(tasks): 
-    tasks.sort(key = lambda x: x[2]) 
+    tasks.sort(key = lambda x: x[3] - x[2] + x[1]) 
     return tasks 
 
 def fastest_machine(machines):
@@ -68,9 +68,11 @@ def save_results(tasks, latency, n):
     file = open(outputF,"w")
     file.write(str(latency) + '\n')
     for task in tasks:
+        temp = ""
         for id in task:
-            file.write(str(id)+ ' ' )
-        file.write('\n')
+            temp += str(id) + ' '
+            #file.write(str(id)+ ' ' )
+        file.write(temp[:len(temp)-1]+'\n')
 
 
 def algorithm(instance):
