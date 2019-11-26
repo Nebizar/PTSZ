@@ -43,13 +43,10 @@ def main():
 
     while (len(tasks) != 0):
         # update ready tasks
-        print("start")
         while tasks[0].r <= cur_time:
-            print("r = " + str(tasks[0].r) + " in READY")
             ready_tasks.append(tasks.pop(0))
             # if there are no more waiting tasks
             if (len(tasks) == 0):
-                print("all in ready")
                 break
         # sort ready tasks by p - ascending
         ready_tasks = sorted(ready_tasks, key=lambda x: x.p, reverse=True)
@@ -68,7 +65,6 @@ def main():
             # assign task to free machine
             machine.free_at = cur_time + task.p
             machine.tasks.append(task)
-            print("add r = " + str(task.r) + " to machine")
             # add tardiness if task ends after due time
             tardiness = tardiness + max(0, (cur_time + task.p - task.d))
         # update cur_time (jump to a new task or a free machine)
@@ -78,7 +74,6 @@ def main():
             cur_time = min(machines, key=lambda x: x.free_at).free_at
         else:
             cur_time = tasks[0].r
-        print("cur_time = " + str(cur_time))
     # while there are still tasks to proceed
     while len(ready_tasks) != 0:
         # update free machines
