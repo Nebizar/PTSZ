@@ -2,6 +2,7 @@
 
 
 import sys
+import os
 
 def toSort(k):
     numb = int(k[1]/10)
@@ -23,6 +24,8 @@ def listowy(inst,inst_size):
         ke[m]=ke[m]+str(inst_ar[i][3])+" "
         meh[m].append(inst_ar[i][3])
         k[m]=max(k[m],inst_ar[i][1])+inst_ar[i][0]
+    if not os.path.exists("results/" + "/132270/a1/" + sys.argv[1] + "/"):
+        os.makedirs("results/" + "/132270/a1/" + sys.argv[1] + "/")
     outFile = open("results/" +"132270/a1/"+str(inst)+"/"+str(inst_size) +".txt", "w+")
     q=wer2("instances/"+str(inst)+"/"+str(inst_size)+".txt", meh)
     outFile.write(str(q)+"\n")
