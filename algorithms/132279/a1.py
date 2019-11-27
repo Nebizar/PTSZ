@@ -48,7 +48,10 @@ def load_instance(file_path):
 
     jobs = []
     for i, line in enumerate(raw_jobs, 1):
-        jobs.append((i, *tuple(map(int, line.split(" ")))))
+        s = line.split(" ")
+        s2 = tuple(map(int, s))
+        jobs.append((i, s2[0], s2[1], s2[2]))
+        # jobs.append((i, *tuple(map(int, line.split(" ")))))
 
     return instance_size, jobs
 
