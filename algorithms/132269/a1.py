@@ -37,14 +37,9 @@ def main():
     os.makedirs("results/" + "/132269/a1/" + sys.argv[1] + "/")
   file1 = open("results/" + "/132269/a1/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "w+")
   file1.write(str(sum))
-  file1.write( "\n")
-  file1.write( " ".join(str(item) for item in procsTasks[0]))
-  file1.write( "\n")
-  file1.write( " ".join(str(item) for item in procsTasks[1]))
-  file1.write( "\n")
-  file1.write( " ".join(str(item) for item in procsTasks[2]))
-  file1.write( "\n")
-  file1.write( " ".join(str(item) for item in procsTasks[3])) 
+  for x in range(machineCount):
+    file1.write( "\n")
+    file1.write( " ".join(str(item) for item in procsTasks[x]))
   file1.close() 
     
 if __name__== "__main__":
