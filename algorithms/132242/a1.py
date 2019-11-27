@@ -1,7 +1,6 @@
 import os
 import math
 import sys
-from time import time as now
 
 class Task:
 
@@ -23,13 +22,17 @@ class Solution:
         self.machines = [[] for x in range(self.num_machines)]
         self.machines_ready = [0 for x in range(self.num_machines)]
         self.path = path
+        self.min_end = 0
 
     def push_task(self, task, machine_num):
         task_start = max(task.min_start, self.machines_ready[machine_num])
         task_end = task_start + task.duration
 
-        self.machines[machine_num].append(task)
+
         self.machines_ready[machine_num] = task_end
+        self.machines[machine_num].append(task)
+
+        self.min_end = min(self.machines_ready)
     
     def get_ready_time(self, machine_num):
         return self.machines_ready[machine_num]
@@ -185,10 +188,25 @@ class Instances:
 
         solution = Solution(self.data_source)
 
-        for task in instance.tasks:
-            cool_machine = solution.close_ready(task.min_start)
-            solution.push_task(task, cool_machine)
-        
+        iterator = 0
+        last_sorted = 0
+
+        while iterator < len(instance.tasks):
+            if instance.tasks[iterator].min_start <= solution.min_end:
+                # find max less than min_end
+                last_sorted = max(iterator, last_sorted)
+                z = last_sorted
+
+                while z < len(instance.tasks) and instance.tasks[z].min_start < solution.min_end:
+                    last_sorted += 1
+                    z += 1
+
+                instance.tasks[iterator:last_sorted] = sorted(instance.tasks[iterator:last_sorted], key=lambda x: (x.duration))
+            
+            cool_machine = solution.close_ready(instance.tasks[iterator].min_start)
+            solution.push_task(instance.tasks[iterator], cool_machine)
+            iterator += 1
+
         return solution.get_solution()
 
 
