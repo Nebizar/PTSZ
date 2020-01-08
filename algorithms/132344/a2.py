@@ -124,7 +124,7 @@ def main():
     tasksList = sorted(tasksList, key=lambda x: int(x.d))
 
     # Magic below - parameters
-    populationSize = 10
+    populationSize = 100
     numOfGenerations = 5
     numOfSwaps = int(len(tasksList) * 0.05)
     maxTime = time.time() + 0.01 * number_of_rows
