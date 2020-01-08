@@ -4,7 +4,6 @@ import sys
 import operator
 import random
 import copy
-import numpy as np
 import time
 
 class Task:
@@ -145,7 +144,7 @@ class GeneticAlgorithm:
                 middleChild.machines[i].lineOfTasks[machinesPoints[i]:machinesPoints[i]] = sequence
                 for seq in sequence:
                     endChild.machines[i].lineOfTasks.append(seq)
-                permSeq = np.random.permutation(sequence)
+                permSeq = random.sample(sequence, len(sequence))
                 permutChild.machines[i].lineOfTasks[machinesPoints[i]:machinesPoints[i]] = permSeq
                 for t in sequence:
                     randomPlace = random.randrange(len(randomChild.machines[i].lineOfTasks))
@@ -156,7 +155,7 @@ class GeneticAlgorithm:
     def crossing1(self, parent_1, parent_2):
         listOftasks = [1 for i in range(1, instance + 2)]
         machinesList1 = [0, 1, 2, 3]
-        machinesList2 = np.random.permutation(machinesList1)
+        machinesList2 = random.sample(machinesList1, len(machinesList1))
         child1 = copy.deepcopy(parent_1)
         child2 = copy.deepcopy(parent_2)
         count1 = 0
