@@ -124,9 +124,9 @@ def main():
     tasksList = sorted(tasksList, key=lambda x: int(x.d))
 
     # Magic below - parameters
-    populationSize = 100
+    populationSize = 50
     numOfGenerations = 5
-    numOfSwaps = int(len(tasksList) * 0.05)
+    numOfSwaps = int(len(tasksList) * 0.02)
     maxTime = time.time() + 0.01 * number_of_rows
 
     bestSolutionEver = calculateSolution(deepcopy(tasksList))  # First best solution
