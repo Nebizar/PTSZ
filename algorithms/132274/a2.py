@@ -150,7 +150,7 @@ def main():
                                       instance_author,
                                       "{}.txt".format(instance_size))
     total_time = 0.0
-    max_time = (10.0 * float(instance_size) * 0.001) - 0.004
+    max_time = (10.0 * float(instance_size) * 0.001) 
 
     tasks, noTasks = readTasks(instance_size, instance_file_path)
     tasks_d, tasks_r = sortTasks(tasks, instance_size)
