@@ -88,10 +88,9 @@ def one_phase_scheduling(n, param, grasp):
 
 if __name__ == "__main__": 
     start_time = time.time()           
-    #indeks=sys.argv[1]
-    #n=int(sys.argv[2])
-    indeks='132328'
-    n=50
+    indeks=sys.argv[1]
+    n=int(sys.argv[2])
+
     max_time=start_time+0.01*n-0.25
     
     file = open("instances/"+indeks+"/"+str(n)+".txt", "r")
