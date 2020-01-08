@@ -32,10 +32,8 @@ def main():
     pairs             = []
     tabu_pairs        = []
     TABU_SIZE         = 100
-    TIME_LIMIT        = 0.01 * int(sys.argv[2]) - 0.055
-    tylko_raz         = True
-    wtf = []
-
+    TIME_LIMIT        = 0.01 * int(sys.argv[2])
+    
     # generuj początkowe uporzatkowanie
     machines = generate_a1_schedule()
     # przepisz procesy z nową informacją (machine_index i task_index)
@@ -49,30 +47,18 @@ def main():
     best_machines      = copy_machines(cur_machines)
     best_tardiness     = best_cur_tardiness   
  
-    # calculate_tardiness2(best_machines)
-    # print(cur_machines[1].tasks[0].machine_index)
-    # print(cur_machines[0].tasks[5].task_index)
-    # print_tasks(cur_machines)
-    # print("----------------------------------------------------")
-    # print_tasks(swap(cur_machines, choose_pair(cur_machines)))
-    # cur = time.time()
-    # print(str((cur - start) * 1000) + "ms")
-
     while(True):
         cur_machines = copy_machines(best_cur_machines)
         if (best_cur_tardiness <= best_tardiness):
             best_tardiness = best_cur_tardiness
             best_machines  = copy_machines(best_cur_machines)
-            # print("!!! new best T: " + str(best_tardiness) + " real: " + str(calculate_tardiness(best_machines)))
-        # print("1: " + str(calculate_tardiness(best_machines)))
         # pairs = generate_pairs(cur_machines)
-        # pairs = select_pairs(pairs, 200)
+        # pairs = select_pairs(pairs, 200, tabu_pairs)
         pairs = generate_x_pairs(cur_machines, 1, tabu_pairs)
         # print("Sprawdze " + str(len(pairs)) + " możliwych zamian")
         best_cur_machines  = copy_machines(cur_machines)
         best_cur_tardiness = calculate_tardiness(cur_machines)
         for pair in pairs:
-            # if not (pair in tabu_pairs):
             if (True):
                 swapped_machines  = swap(cur_machines, pair)
                 swapped_tardiness = calculate_tardiness(swapped_machines)
@@ -80,14 +66,12 @@ def main():
                     best_cur_machines  = copy_machines(swapped_machines)
                     best_cur_tardiness = swapped_tardiness 
                     if (len(tabu_pairs) > TABU_SIZE):
-                        if (tylko_raz):
-                            tylko_raz = False
                         tabu_pairs.pop(0)
                         tabu_pairs.append(pair)
                     else:
                         tabu_pairs.append(pair)
                 if (time.time() - start >= TIME_LIMIT):
-                    # zapisz najlepszy wynik, jeżeli się pojawił w trakcie iterowania po zbiorze par
+                    # zapisz najlepszy wynik, jeżeli się pojawił w trakcie iterowania po zbiorze par
                     if (best_cur_tardiness < best_tardiness):
                         best_tardiness = best_cur_tardiness
                         best_machines  = copy_machines(best_cur_machines)
@@ -103,7 +87,6 @@ def main():
         os.makedirs("results/" + "132292/a2/" + sys.argv[1] + "/")
     file = open("results/" + "132292/a2/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "w+")
     file.write(str(best_tardiness))
-    # calculate_tardiness2(best_machines)
     for machine in best_machines:
         file.write('\n')
         for task in machine.tasks:
@@ -124,7 +107,7 @@ def generate_x_pairs(machines, x, tabu_pairs):
     while (no_pairs < x):
         pair = choose_pair(machines)
         if ((not (pair in selected_pairs))
-        # and (not (pair in tabu_pairs))
+        and (not (pair in tabu_pairs))
         and (calculate_time(machines, pair[0]) >= pair[1].task.r) 
         and (calculate_time(machines, pair[1]) >= pair[0].task.r)):
             selected_pairs.append(pair)
@@ -142,12 +125,13 @@ def generate_pairs(machines):
                         pairs.append([task1, task2])
     return pairs
 
-def select_pairs(pairs, x):
+def select_pairs(pairs, x, tabu_pairs):
     no_pairs = 0
     selected_pairs = []
     while (no_pairs < x):
         pair = pairs[randrange(len(pairs))]
-        if not (pair in selected_pairs):
+        if not (pair in selected_pairs)
+        and not (pair in tabu_pairs):
             selected_pairs.append(pair)
             no_pairs = no_pairs + 1
     return selected_pairs
