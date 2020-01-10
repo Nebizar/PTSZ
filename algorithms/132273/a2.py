@@ -110,12 +110,13 @@ def main():
         m1 = machine[0]
         m2 = machine[1]
         minlen = min(len(M[m1]), len(M[m2]))
-        a = random.randint(2, minlen-2)
+        a = random.randint(0, minlen-2)
+        b = random.randint(a+1, min(minlen-1, a+30))
 
-        part1 = M1[m1][:a]
-        part2 = M1[m2][:a]
-        M1[m1][:a] = part2
-        M1[m2][:a] = part1
+        part1 = M1[m1][a:b]
+        part2 = M1[m2][a:b]            
+        M1[m1][a:b] = part2
+        M1[m2][a:b] = part1
 
             
         D1, Tardiness1 = schedule_one(m1, M1, D1)
