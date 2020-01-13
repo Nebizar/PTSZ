@@ -48,7 +48,7 @@ def do_better(task_list, original_due, original_machine, number_of_rows):
     for swap_n_times in range (0,times):
         new_task_list.append(task_list.copy())
         index_value = random.randint(0, len(task_list)-1)
-        change_index = random.randint(-5, 5)
+        change_index = random.choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
         if (index_value + change_index)>len(task_list) -1:
             swap_index = len(task_list) -1
         elif (index_value + change_index)<0:
