@@ -93,7 +93,7 @@ def acceptance(current, new, temp):
         return 1
     else:
         try:
-            ret = math.exp(-1000*(current - new) / temp)
+            ret = math.exp(-8000*(current - new) / temp)
         except OverflowError:
             ret = 0
 
