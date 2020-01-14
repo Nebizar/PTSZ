@@ -114,9 +114,9 @@ def main():
         b = random.randint(a+1, min(minlen-1, a+30))
 
         part1 = M1[m1][a:b]
-        part2 = M1[m2][a:b]            
-        M1[m1][a:b] = part2
-        M1[m2][a:b] = part1
+        random.shuffle(part1)           
+
+        M1[m1][a:b] = part1
 
             
         D1, Tardiness1 = schedule_one(m1, M1, D1)
