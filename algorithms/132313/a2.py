@@ -84,8 +84,16 @@ class GeneticAlgorithm:
         self.population.append(ListAlgorithm(tasksList).groupMachines())
 
     def iteration(self):
-        parent_1 = random.choice(self.population)
-        parent_2 = random.choice(self.population)
+        if (random.random() < 0.6):
+            if (random.random() < 0.5):
+                parent_1 = self.population[0]
+                parent_2 = random.choice(self.population)
+            else:
+                parent_1 = random.choice(self.population)
+                parent_2 = self.population[0]
+        else:
+            parent_1 = random.choice(self.population)
+            parent_2 = random.choice(self.population)
         output = self.crossing(parent_1, parent_2)
         for ch in output:
             self.population.append(ch)
@@ -151,47 +159,6 @@ class GeneticAlgorithm:
                     randomChild.machines[i].lineOfTasks.insert(randomPlace, t)
             output = [middleChild, permutChild, endChild, randomChild]
         return output
-
-    def crossing1(self, parent_1, parent_2):
-        listOftasks = [1 for i in range(1, instance + 2)]
-        machinesList1 = [0, 1, 2, 3]
-        machinesList2 = random.sample(machinesList1, len(machinesList1))
-        child1 = copy.deepcopy(parent_1)
-        child2 = copy.deepcopy(parent_2)
-        count1 = 0
-        count2 = 0
-        for i in range(0,4):
-            minNumber = min(len(parent_1.machines[machinesList1[i]].lineOfTasks),len(parent_2.machines[machinesList2[i]].lineOfTasks))
-            randomCut = random.randrange(minNumber)
-            child1.machines[machinesList1[i]].lineOfTasks = child1.machines[machinesList1[i]].lineOfTasks[:randomCut] + child2.machines[machinesList2[i]].lineOfTasks[-randomCut:]
-            child2.machines[machinesList2[i]].lineOfTasks = child2.machines[machinesList2[i]].lineOfTasks[:randomCut] + child1.machines[machinesList1[i]].lineOfTasks[-randomCut:]
-            output = [child1, child2]
-            count1 += len(child1.machines[machinesList1[i]].lineOfTasks)
-            count2 += len(child2.machines[machinesList2[i]].lineOfTasks)
-        if count1 != instance:
-            missing_list = [i for i in range(1, len(listOftasks)) if listOftasks[i] == 1]
-            for i in range(0, 4):
-                insertedElements = []
-                for x in missing_list:
-                    for y in parent_2.machines[i].lineOfTasks:
-                        if x == y.id:
-                            insertedElements.append(y)
-                sequence = self.makeSequence(insertedElements)
-                point = len(child1.machines[machinesList1[i]].lineOfTasks) - 1
-                child1.machines[machinesList1[i]].lineOfTasks[point:point] += sequence
-        if count2 != instance:
-            missing_list = [i for i in range(1, len(listOftasks)) if listOftasks[i] == 1]
-            for i in range(0, 4):
-                insertedElements = []
-                for x in missing_list:
-                    for y in parent_2.machines[i].lineOfTasks:
-                        if x == y.id:
-                            insertedElements.append(y)
-                sequence = self.makeSequence(insertedElements)
-                point = len(child2.machines[machinesList2[i]].lineOfTasks) - 1
-                child2.machines[machinesList2[i]].lineOfTasks[point:point] += sequence
-        return output
-
 
     def mutation(self, parent):
         child = copy.deepcopy(parent)
@@ -350,10 +317,9 @@ if __name__ == "__main__":
             id += 1
     os.makedirs(os.path.dirname(result_path), exist_ok=True)
     genetic = GeneticAlgorithm(tasksList, sumDuration / 4)
-    bound = start_time + 0.01 * (instance - 4)
+    bound = start_time + 0.01 * (instance - 6)
     while(time.time() < bound):
         genetic.iteration()
-    print(time.time() - start_time)
     if not os.path.exists("results/" + "/132313/a2/" + sys.argv[1] + "/"):
         os.makedirs("results/" + "/132313/a2/" + sys.argv[1] + "/")
     fw = open("results/" + "/132313/a2/" + sys.argv[1] + "/" + sys.argv[2] + ".txt", "w+")
