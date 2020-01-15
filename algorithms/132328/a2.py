@@ -2,7 +2,7 @@ from operator import itemgetter
 import sys
 import os
 import time
-import numpy as np
+import random
 
 def find_ready_task(task,l,machine_time, grasp):
     find=0
@@ -20,7 +20,7 @@ def find_ready_task(task,l,machine_time, grasp):
         j+=1
     #j-=1
     if find>0:
-        j=np.random.choice(ready_task_indeks)
+        j=ready_task_indeks[random.randrange(len(ready_task_indeks))]
     else:
         k=0
         while k<min_r and task[k][1]>task[min_indeks][1]+task[min_indeks][0]*0.4:
@@ -28,7 +28,10 @@ def find_ready_task(task,l,machine_time, grasp):
         if grasp==1 or task[k][1]>task[min_indeks][1]+task[min_indeks][0]*0.4:
             j=min_indeks
         else:
-            j=np.random.choice([k,min_indeks]) 
+            if random.randrange(grasp)==0:
+                j=k
+            else:
+                j=min_indeks
     return j
 
 def two_phase_scheduling(n, param, grasp):
@@ -47,8 +50,12 @@ def two_phase_scheduling(n, param, grasp):
             if k!=mini_indeks and sumP[k][0]<=mini:
                 mini=sumP[k][0]
                 mini_indeks2=k
-                
-        j=np.random.choice([mini_indeks,mini_indeks2])
+          
+        if random.randrange(grasp)==0:
+            j=mini_indeks
+        else:
+            j=mini_indeks2
+
         task_list[j].append(param[i])
         sumP[j][0]+=param[i][0]               
                     
