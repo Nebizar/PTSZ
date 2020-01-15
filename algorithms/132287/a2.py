@@ -80,7 +80,6 @@ def generate_candidates(candidate, candidates_size, n):
 	for _ in range(candidates_size):
 		machines = deepcopy(candidate.machines)
 		num_of_exchanges = max(1, int(0.2 * (n // 50)**2))
-		print(num_of_exchanges)
 		for _ in range(num_of_exchanges):
 			m0_idx = randrange(len(machines))
 			m1_idx = randrange(len(machines))
@@ -107,7 +106,6 @@ def schedule(n, tasks):
 	candidates_size = int(n) // 4
 	tabu_list = []
 	initial_solution = generate_initial_solution(tasks)
-	print(initial_solution.fitness)
 	best_candidate = initial_solution
 	best_solution = initial_solution
 	while time_taken < limit:
@@ -138,7 +136,7 @@ def run():
 
 	best = schedule(n, tasks)
 
-	output_dir = 'results/132287/a1/{index}'.format(index=index)
+	output_dir = 'results/132287/a2/{index}'.format(index=index)
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
 	output = open('{output_dir}/{n}.txt'.format(output_dir=output_dir, n=n), 'w')
