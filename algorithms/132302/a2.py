@@ -1,8 +1,8 @@
 import time
 import sys
 import os
-import numpy as np
-
+import random
+ 
 def get_data(input_file):
     file = open(input_file, "r")
     n=int(file.readline())
@@ -13,19 +13,19 @@ def get_data(input_file):
         tasks[i] = [i+1] + tasks[i]
     file.close()
     return tasks, n
-
-def sort(tasks): 
+ 
+def sort(tasks):
     tasks.sort(key = lambda x: x[3] - x[2] + x[1])
-    return tasks 
-
-def sort_d(tasks): 
+    return tasks
+ 
+def sort_d(tasks):
     tasks.sort(key = lambda x: x[3])
-    return tasks 
-
+    return tasks
+ 
 def sort_r(tasks):
     tasks.sort(key = lambda x: x[2])
     return tasks
-
+ 
 def getReadyTasks(tasks, machine_time, grasp):
     readyTasks = []
     i = 0
@@ -46,9 +46,9 @@ def getReadyTasks(tasks, machine_time, grasp):
         else:
             readyTasks = [0]
         #tasks.pop()
-
+ 
     return readyTasks
-
+ 
 def fastest_machine_org(machines):
     min = machines[0]
     idx = [0]
@@ -59,7 +59,7 @@ def fastest_machine_org(machines):
         if machines[i] == min:
             idx.append(i)
     return idx
-
+ 
 def assign_org(choice, tasks_om, counters, machines, task, latency):
     tasks_om[choice].append(task[0])
     counters[choice] += 1
@@ -70,7 +70,7 @@ def assign_org(choice, tasks_om, counters, machines, task, latency):
     if machines[choice] > task[3]:
         latency += machines[choice] - task[3]
     return tasks_om, counters, machines, latency
-
+ 
 def solution_org(tasks, n, grasp):
     machines = [0,0,0,0]
     counters = [0,0,0,0]
@@ -91,17 +91,20 @@ def solution_org(tasks, n, grasp):
                     mini = 0
             #print(choice)
             rTasks = getReadyTasks(tasks, machines[choice], grasp)
-            randTask = np.random.choice(rTasks)
+            idx_rand = random.randrange(0, len(rTasks))
+            randTask = rTasks[idx_rand]
             tasks_om, counters, machines, latency = assign_org(choice, tasks_om, counters, machines, tasks[randTask], latency)
             tasks.pop(randTask)
         else:
             rTasks = getReadyTasks(tasks, machines[machine_choice[0]], grasp)
-            randTask = np.random.choice(rTasks)
+            #randTask = np.random.choice(rTasks)
+            idx_rand = random.randrange(0, len(rTasks))
+            randTask = rTasks[idx_rand]
             tasks_om, counters, machines, latency = assign_org(machine_choice[0], tasks_om, counters, machines, tasks[randTask], latency)
             tasks.pop(randTask)
         #print(len(tasks))
     return tasks_om, latency
-
+ 
 def fastest_machine(machines):
     min = machines[0]
     idx = 0
@@ -110,7 +113,7 @@ def fastest_machine(machines):
             min = machines[i]
             idx = i
     return idx
-
+ 
 def assign(choice, tasks_om, machines, task, latency):
     tasks_om[choice].append(task[0])
     #counters[choice] += 1
@@ -121,7 +124,7 @@ def assign(choice, tasks_om, machines, task, latency):
     if machines[choice] > task[3]:
         latency += machines[choice] - task[3]
     return tasks_om, machines, latency
-
+ 
 def solution(tasks, n, grasp):
     machines = [0,0,0,0]
     #counters = [0,0,0,0]
@@ -130,11 +133,13 @@ def solution(tasks, n, grasp):
     for _ in range(0,n):
         machine_choice = fastest_machine(machines)
         rTasks = getReadyTasks(tasks, machine_choice, grasp)
-        randTask = np.random.choice(rTasks)
+        #randTask = np.random.choice(rTasks)
+        idx_rand = random.randrange(0, len(rTasks))
+        randTask = rTasks[idx_rand]
         tasks_om, machines, latency = assign(machine_choice, tasks_om, machines, tasks[randTask], latency)
         tasks.pop(randTask)
     return tasks_om, latency
-
+ 
 def save_results(tasks, latency, n):
     outputF = "results/132302/a2/" + sys.argv[1] + "/" + str(n) + ".txt"
     file = open(outputF,"w")
@@ -145,21 +150,21 @@ def save_results(tasks, latency, n):
             temp += str(id) + ' '
             #file.write(str(id)+ ' ' )
         file.write(temp[:len(temp)-1]+'\n')
-
-
+ 
+ 
 def algorithm(instance):
     if not os.path.exists("results/132302/a2/" + sys.argv[1] + "/"):
         os.makedirs("results/132302/a2/" + sys.argv[1] + "/")
     inputF = "instances/"+ sys.argv[1] + "/" + str(instance) + ".txt"
     tasks_list, n = get_data(inputF)
-
+ 
     start_time = time.time()
     max_time=start_time+0.01*n-0.05
-
+ 
     tasks_list = sort(tasks_list.copy())
     tasks_list_d = sort_d(tasks_list.copy())
     tasks_list_r = sort_r(tasks_list.copy())
-
+ 
     tasks_org, latency_org = solution_org(tasks_list.copy(), n, 1)
     #print(latency_org)
     tasks, latency = solution(tasks_list.copy(), n, 1)
@@ -168,7 +173,7 @@ def algorithm(instance):
     #print(latency_d)
     tasks_r, latency_r = solution(tasks_list_r.copy(), n, 1)
     #print(latency_r)
-
+ 
     if latency < latency_d and latency < latency_r and latency < latency_org:
         #print('normal')
         while(time.time() < max_time):
@@ -207,14 +212,14 @@ def algorithm(instance):
                 tasks = tasks_new
                 latency = latency_new
             #print("Latency New: ", latency)
-
+ 
     #print("Latency: ", latency)
     #print('Time:', time.time() - start_time)
     save_results(tasks, latency, n)
     #return latency
-
+ 
 def main():
     algorithm(int(sys.argv[2]))
-
+ 
 if __name__ == '__main__':
     main()
